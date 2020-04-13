@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Animal Hangman</title>
+  <link link href="https://fonts.googleapis.com/css?family=PT+Serif|Playfair+Display&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <h1>Animal hangman</h1>
+  <h2> Hello! Welcome to my hangman game! Press a letter to start.</h2>
+  <button id="play-again" onclick="startGame()">Play again</button>
+
+  <div class="word-box">
+    <p id="chosen-word"></p>
+  </div>
+
+  <div class="wins-losses">
+    <p>Wins: <span id="wins"></span></p>
+    <p>Losses: <span id="losses"></span></p>
+  </div>
+  <div class="guesses">
+    <p>Guesses left: <span id="guesses-left"></span></p>
+    <p>Letters guessed: <span id="letters-guessed"></span></p>
+  </div>
+</body>
+
+</html>
