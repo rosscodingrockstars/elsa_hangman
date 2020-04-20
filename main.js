@@ -80,59 +80,74 @@ function startGame() {
       underscores[i] = "_";
     }
   }
-  console.log(selectedWord);
   displayWord.innerHTML = underscores.join(" ");
   playButton.style.display = "none";
 }
 
-startGame();
-
 function didYouWin() {
-  if (letterCounter === selectedWord.length && guessesLeft >= 0) {
-    wins++;
+
+  if (underscores.join("") === selectedWord && guessesLeft >= 0) {
     winSound.play();
-    winDisplay.innerHTML = wins;
+    wins++;
+  
+    winsDisplay.innerHTML = wins;
     playButton.style.display = "block";
-  } else {
-   if(letterCounter !== selectedWord.length && guessesLeft <= 1){
-      losses++;
+  } else if(guessesLeft === 0) {
       loseSound.play();
-      lossesDisplay.innerHTML = losses;
+      losses++; 
+      lossesDisplay.innerHTML = losses; 
       playButton.style.display = "block";
     }
+  
+}
+
+startGame();
+
+function checkGuess(letter) {
+
+  if (event.keyCode >= 65 && event.keyCode <= 90) { 
+
+       let correctLetter = false;
+
+        for (let i = 0; i < selectedWord.length; i++) {
+          if(selectedWord[i] === letter) {
+            correctLetter = true;
+          }
+        }
+
+        if(correctLetter) {
+          for (let i = 0; i < selectedWord.length; i++) {
+            if(selectedWord[i] === letter) {
+              underscores[i] = letter
+              displayWord.innerHTML = underscores.join(" ");
+            }
+          }
+        }
+        else if (lettersGuessed.includes(letter)) {
+          alert("You already guessed that letter! Please guess something else!")
+        }
+
+        else {
+          lettersGuessed.push(letter);
+          lettersGuessedDisplay.innerHTML = lettersGuessed.join(", ");
+        }
+
+    
+  } else { 
+    alert("Guess a letter, please!");
   }
 }
 
-document.onkeyup = function (event) {
+
+document.onkeyup = function(event) {
   let userGuess = event.key.toLowerCase();
-  if (event.keyCode < 65 || event.keyCode > 90) {
-    alert('Guess a letter, please!');
-  }
-  if (selectedWord.indexOf(userGuess) > -1 && event.keyCode >= 65 && event.keyCode <= 90) {
-    for (let i = 0; i < selectedWord.length; i++) {
-      
-     
-      if (selectedWord[i] === userGuess) {
-        underscores[i] = userGuess;
-        displayWord.innerHTML = underscores.join(" ");
-        letterCounter++;
-        didYouWin();
-      }
-    }
-  } else {
-    if (!selectedWord.indexOf(userGuess) > -1 && event.keyCode >= 65 && event.keyCode <= 90 && lettersGuessed.indexOf (userGuess) === -1) {
-      lettersGuessed.push(userGuess);
-      lettersGuessedDisplay.innerHTML = lettersGuessed.join(", ");
-      didYouWin();
-    }
-   else {
-     if (lettersGuessed.indexOf(userGuess) > -1) {
-       alert('You already guessed that letter! Please guess something else!')
-     }
-   } 
-  }
-  if (guessesLeft > 0 && event.keyCode <= 65 && event.keyCode >= 90 && lettersGuessed.indexOf (userGuess) === -1) {
+
+  checkGuess(userGuess);
+  
+  if (event.keyCode >= 65 && event.keyCode <= 90 && guessesLeft >= 1) { 
     guessesLeft--;
-    guessesLeftDisplay.innerHTML = guessesLeft;
+    guessesLeftDisplay.innerHTML = guessesLeft; 
   }
-};
+
+  didYouWin();
+}
